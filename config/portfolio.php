@@ -12,7 +12,7 @@ return [
         'github_url' => 'https://github.com/rahadyadaffa-glitch/Portofolio-SOC-Daffa-Rahadya-A',
         'icon' => '<svg class="w-16 h-16 sm:w-20 sm:h-20" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4"/><path d="M11 12h4"/><path d="M11 15h4"/><path d="M8 9h.01"/><path d="M8 12h.01"/><path d="M8 15h.01"/></svg>',
         'label' => 'SOC',
-        'sublabel' => 'View Analysis on GitHub'
+        'sublabel' => 'View Write-ups on GitHub'
     ]
 ];
 
