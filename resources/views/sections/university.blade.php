@@ -17,7 +17,7 @@
                 <div
                     class="w-20 h-20 shrink-0 bg-transparent flex items-center justify-center rounded-none group-hover:scale-110 transition-all duration-500 overflow-hidden">
                     <img src="/images/university/university-logo.webp" alt="University Logo"
-                        class="w-full h-full object-contain">
+                        class="w-full h-full object-contain mix-blend-multiply">
                 </div>
 
                 <div>
