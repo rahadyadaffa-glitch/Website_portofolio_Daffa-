@@ -9,7 +9,7 @@ return [
         'university' => 'University',
     ],
     'hero' => [
-        'headline' => 'Informatics Student | Focus on Web Pentesting & SOC Analysis',
+        'headline' => 'Aspiring Web Pentest & SOC Analyst',
         'tagline' => '.',
         'bio1' => 'I am an Informatics student at Telkom University, currently focusing on Penetration Testing and Security Operations Center (SOC). Although I do not yet have formal work experience, I have consistently honed my technical skills through intensive laboratory simulations and various academic projects.',
         'bio2' => 'To sharpen my analytical and problem-solving skills, I actively explore challenges on various CTF platforms. Through these activities, I have learned to identify vulnerabilities and understand system defense mechanisms in depth. I am an adaptable individual, staying current with the latest cyber threats and ready to provide technical contributions in a professional environment.',
