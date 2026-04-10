@@ -76,7 +76,7 @@
                 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'">
                 <div class="flex items-center gap-6 relative">
                     <img src="/images/organization/logo-badan-mentoring.webp" alt="Logo Badan Mentoring"
-                        class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
+                        class="w-24 h-24 sm:w-32 sm:h-32 object-contain">
                     <div class="inline-block relative">
                         <h3
                             class="text-4xl sm:text-6xl font-black text-[var(--text-main)] tracking-tight uppercase leading-none">
