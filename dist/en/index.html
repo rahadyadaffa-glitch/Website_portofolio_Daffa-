@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daffa Rahadya - Portfolio</title>
+    <meta name="description" content="y.">
+    
+    <!-- Alpine.js Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine.js Core -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Google Fonts: Space Grotesk & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #F9F8F6;
+            --bg-alt: #EFE9E3;
+            --accent: #C9B59C;
+            --accent-glow: rgba(201, 181, 156, 0.3);
+            --border: #D9CFC7;
+            --text-main: #1A1A1A; /* Pure professional black */
+            --text-dim: #4B4B4B; /* Dark charcoal */
+            --lux-ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg);
+            color: var(--text-main);
+            /* Designer Grid Pattern (Stone) */
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        h1, h2, h3, .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .neo-shadow {
+            box-shadow: 8px 8px 0px 0px var(--border);
+            transition: all 0.3s var(--lux-ease);
+        }
+        .neo-shadow-hover:hover {
+            box-shadow: 12px 12px 0px 0px var(--accent);
+            transform: translate(-4px, -4px);
+        }
+        
+        .neo-border {
+            border: 3px solid var(--border);
+        }
+        .neo-border-accent {
+            border: 3px solid var(--accent);
+        }
+        .neo-border-black {
+            border: 3px solid var(--text-main);
+        }
+
+        /* --- Paper & Tape Concept --- */
+        .tape-piece {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 140px;
+            height: 38px;
+            background-color: rgba(217, 207, 199, 0.45); /* Muted Stone/Wash color */
+            backdrop-filter: blur(2px);
+            z-index: 40;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .tape-piece::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+        }
+
+        .paper-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        .neo-paper {
+            background-color: var(--bg-alt);
+            border: 1px solid var(--border);
+            box-shadow: 4px 4px 0px 0px var(--border);
+            transition: all 0.5s var(--lux-ease);
+        }
+        .neo-paper:hover {
+            box-shadow: 8px 8px 0px 0px var(--accent);
+            transform: translate(-2px, -2px) rotate(0deg) !important;
+        }
+
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .glitch:hover .glitch-text::before {
+            animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #ff00ff;
+            z-index: -1;
+            transform: translate(-2px, 2px);
+        }
+        .glitch:hover .glitch-text::after {
+            animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+            color: #00ffff;
+            z-index: -2;
+            transform: translate(2px, -2px);
+        }
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .text-outline {
+            -webkit-text-stroke: 1.5px black;
+            color: transparent;
+            transition: all 0.7s var(--lux-ease);
+        }
+        .glitch:hover .text-outline {
+            -webkit-text-stroke: 1.5px transparent;
+            color: black;
+        }
+        
+        /* High-end utilities */
+        .transition-lux { transition: all 0.7s var(--lux-ease); }
+    </style>
+
+    <!-- Vite / Tailwind -->
+            <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#111111',
+                            accent: '#2563eb' // subtle blue accent for links
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+<body class="bg-white text-gray-900 antialiased" x-data="{ expandedCert: null }">
+    <div class="grain"></div>
+
+    <nav class="bg-[var(--bg)]/90 backdrop-blur-xl border-b border-[var(--border)] z-50 fixed top-0 w-full" x-data="{ atTop: true }" @scroll.window="atTop = (window.pageYOffset > 20) ? false : true">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300" :class="atTop ? 'h-24' : 'h-16'">
+        <div class="flex justify-between items-center h-full">
+            
+            <!-- Logo Section -->
+            <div class="flex items-center">
+                <a href="#" class="font-black text-3xl tracking-tighter text-[var(--accent)]">Daffa.</a>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="#about" class="text-xs font-black uppercase tracking-widest text-[var(--text-dim)] hover:text-[var(--accent)] transition-all">About</a>
+                <a href="#skills" class="text-xs font-black uppercase tracking-widest text-[var(--text-dim)] hover:text-[var(--accent)] transition-all">Skills</a>
+                <a href="#portfolio" class="text-xs font-black uppercase tracking-widest text-[var(--text-dim)] hover:text-[var(--accent)] transition-all">Portfolio</a>
+                <a href="#organization" class="text-xs font-black uppercase tracking-widest text-[var(--text-dim)] hover:text-[var(--accent)] transition-all">Organization</a>
+                <a href="#education" class="text-xs font-black uppercase tracking-widest text-[var(--text-dim)] hover:text-[var(--accent)] transition-all">University</a>
+                <a href="#contact" class="text-xs font-black uppercase tracking-widest text-[var(--text-dim)] hover:text-[var(--accent)] transition-all">Contact</a>
+                
+                <div class="h-6 w-px bg-[var(--border)]"></div>
+
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-4">
+                    <a href="http://vibecode-porto.test" class="text-xs font-black text-[var(--text-dim)] hover:text-[var(--text-main)]">ID</a>
+                    <span class="text-[var(--border)]">/</span>
+                    <a href="http://vibecode-porto.test/en" class="text-xs font-black text-[var(--text-main)] underline decoration-[var(--accent)] decoration-2">EN</a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Toggles (stub) -->
+            <div class="lg:hidden">
+            </div>
+            
+        </div>
+    </div>
+</nav>
+
+    <main class="overflow-x-clip">
+        <!-- About Section -->
+<section id="about" class="pt-48 pb-24 relative overflow-hidden" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- Top Title Row -->
+        <div class="mb-16 transition-all duration-1000" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+            <h1 class="text-6xl sm:text-8xl md:text-[10rem] font-black tracking-[-0.05em] leading-[0.8] glitch">
+                <span class="glitch-text text-outline !-webkit-text-stroke-[2px] !-webkit-text-stroke-[var(--border)]" style="-webkit-text-stroke: 2px var(--border);" data-text="CYBERSECURITY ENTHUSIAST">CYBERSECURITY ENTHUSIAST</span>
+            </h1>
+            <p class="text-3xl sm:text-5xl text-[var(--text-main)] font-bold mt-12 tracking-tight">
+                Hi, I'm Daffa Rahadya.
+            </p>
+            <p class="text-xl sm:text-2xl text-[var(--text-main)] font-black mt-4 tracking-[0.2em] uppercase">
+                Junior Web Pentester &amp; SOC Analyst
+            </p>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-start justify-between gap-16 transition-all duration-1000 delay-200" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+            
+            <!-- Left: Text Box -->
+            <div class="flex-1 md:pr-12">
+                <h2 class="text-4xl sm:text-5xl font-bold text-[var(--text-main)] mb-10 leading-none tracking-tighter">
+                    y.
+                </h2>
+                
+                <div class="space-y-6 text-[var(--text-dim)] mb-16 text-xl leading-relaxed font-medium max-w-2xl">
+                    <p>I am a passionate cybersecurity enthusiast with a focus on Penetration Testing and Security Operations. My journey involves hands-on experience in exploiting vulnerabilities and analyzing security events.</p>
+                    <p>Always eager to learn and adapt to the ever-evolving landscape of digital security, I spend my time participating in CTFs and contributing to security open-source projects.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-6">
+                    <a href="#portfolio" class="px-10 py-5 bg-[var(--accent)] text-white font-bold text-xl neo-shadow neo-shadow-hover neo-border-accent uppercase tracking-widest hover:brightness-110 transition-all">
+                        View Portfolio
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right: Avatar (Studio Box) -->
+            <div class="w-full md:w-5/12 flex shrink-0 justify-center md:justify-end">
+                <div class="w-[85%] aspect-[4/5] bg-[var(--bg-alt)] relative p-4 neo-shadow neo-border">
+                    <div class="w-full h-full overflow-hidden grayscale contrast-110 hover:grayscale-0 transition-all duration-1000">
+                        <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974?auto=format&fit=crop&q=80&w=600" alt="Daffa" class="object-cover w-full h-full">
+                    </div>
+                    <!-- Decorative Tan Square -->
+                    <div class="absolute -bottom-6 -right-6 w-12 h-12 bg-[var(--accent)] neo-border hidden sm:block shadow-lg"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Dedicated Skills Section -->
+<section id="skills" class="py-32 bg-[#fafafa] border-t border-gray-100 relative" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+        
+        <div class="mb-12">
+            <h2 class="text-4xl font-extrabold text-gray-900 tracking-tighter">Core Skills</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
+            <div>
+                <span class="text-sm font-bold text-gray-400 uppercase block mb-4">Penetration Testing</span>
+                <div class="flex flex-wrap gap-4">
+                    <span class="px-6 py-3 bg-white text-gray-900 text-lg font-bold outline outline-1 outline-gray-200 shadow-sm hover:outline-black hover:bg-black hover:text-white transition-colors cursor-default">sqlmap</span>
+                    <span class="px-6 py-3 bg-white text-gray-900 text-lg font-bold outline outline-1 outline-gray-200 shadow-sm hover:outline-black hover:bg-black hover:text-white transition-colors cursor-default">Burp Suite</span>
+                    <span class="px-6 py-3 bg-white text-gray-900 text-lg font-bold outline outline-1 outline-gray-200 shadow-sm hover:outline-black hover:bg-black hover:text-white transition-colors cursor-default">Nmap</span>
+                </div>
+            </div>
+            
+            <div>
+                <span class="text-sm font-bold text-gray-400 uppercase block mb-4">Security Operations</span>
+                <div class="flex flex-wrap gap-4">
+                    <span class="px-6 py-3 bg-white text-gray-900 text-lg font-bold outline outline-1 outline-gray-200 shadow-sm hover:outline-black hover:bg-black hover:text-white transition-colors cursor-default">Wireshark</span>
+                    <span class="px-6 py-3 bg-white text-gray-900 text-lg font-bold outline outline-1 outline-gray-200 shadow-sm hover:outline-black hover:bg-black hover:text-white transition-colors cursor-default">Wazuh</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+    <section id="portfolio" class="py-32 relative bg-transparent" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+        
+        <div class="mb-24">
+            <h2 class="text-5xl sm:text-7xl font-black text-[var(--text-main)] tracking-tighter uppercase mb-2">My Work</h2>
+            <div class="w-32 h-2 bg-[var(--accent)]"></div>
+        </div>
+
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-24 mt-20">
+            
+                                    <div class="relative pt-8">
+                <!-- Tape Piece -->
+                <div class="tape-piece"></div>
+
+                <a href="https://github.com/rahadyadaffa-glitch/Portofolio-Daffa-Rahadya-A" target="_blank" rel="noopener noreferrer" 
+                   class="group relative block neo-paper p-10 sm:p-14 overflow-hidden paper-texture"
+                   style="transform: rotate(-1deg);">
+
+                    <div class="relative z-10 flex flex-col h-full items-start">
+                        
+                        <div class="w-20 h-20 mb-10 text-[var(--accent)] group-hover:scale-125 group-hover:rotate-6 transition-all duration-500">
+                            <svg class="w-16 h-16 sm:w-20 sm:h-20" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M12 12v3"/><path d="m14 17-2-2-2 2"/></svg>
+                        </div>
+
+                        <h3 class="text-4xl font-black text-[var(--text-main)] tracking-tighter pb-3 group-hover:underline decoration-[var(--accent)] decoration-4 transition-all duration-500 leading-none uppercase">
+                            Pentest
+                        </h3>
+                        
+                        <p class="mt-6 text-lg text-[var(--text-dim)] group-hover:text-[var(--text-main)] transition-colors duration-500 font-medium leading-relaxed">
+                            View Write-ups on GitHub
+                        </p>
+
+                        <!-- GitHub CTA Pill -->
+                        <div class="mt-12 inline-flex items-center gap-3 font-black text-[var(--text-main)] border-b-4 border-[var(--accent)] pb-2 transition-all group-hover:border-[var(--text-main)] uppercase tracking-[0.2em] text-sm">
+                            Browse on GitHub
+                            <svg class="w-6 h-6 transition-transform group-hover:translate-x-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+                                    <div class="relative pt-8">
+                <!-- Tape Piece -->
+                <div class="tape-piece"></div>
+
+                <a href="https://github.com/rahadyadaffa-glitch/Portofolio-Daffa-Rahadya-A" target="_blank" rel="noopener noreferrer" 
+                   class="group relative block neo-paper p-10 sm:p-14 overflow-hidden paper-texture"
+                   style="transform: rotate(1deg);">
+
+                    <div class="relative z-10 flex flex-col h-full items-start">
+                        
+                        <div class="w-20 h-20 mb-10 text-[var(--accent)] group-hover:scale-125 group-hover:rotate-6 transition-all duration-500">
+                            <svg class="w-16 h-16 sm:w-20 sm:h-20" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4"/><path d="M11 12h4"/><path d="M11 15h4"/><path d="M8 9h.01"/><path d="M8 12h.01"/><path d="M8 15h.01"/></svg>
+                        </div>
+
+                        <h3 class="text-4xl font-black text-[var(--text-main)] tracking-tighter pb-3 group-hover:underline decoration-[var(--accent)] decoration-4 transition-all duration-500 leading-none uppercase">
+                            SOC
+                        </h3>
+                        
+                        <p class="mt-6 text-lg text-[var(--text-dim)] group-hover:text-[var(--text-main)] transition-colors duration-500 font-medium leading-relaxed">
+                            View Analysis on GitHub
+                        </p>
+
+                        <!-- GitHub CTA Pill -->
+                        <div class="mt-12 inline-flex items-center gap-3 font-black text-[var(--text-main)] border-b-4 border-[var(--accent)] pb-2 transition-all group-hover:border-[var(--text-main)] uppercase tracking-[0.2em] text-sm">
+                            Browse on GitHub
+                            <svg class="w-6 h-6 transition-transform group-hover:translate-x-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</section>
+    <section id="organization" class="py-24 bg-transparent" x-data="{ shown: false }"
+    x-intersect.once.margin.-100px="shown = true">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000"
+        :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+
+        <div class="mb-24">
+            <h2 class="text-5xl sm:text-7xl font-black text-[var(--text-main)] tracking-tighter uppercase mb-2">
+                Experience
+            </h2>
+            <div class="w-32 h-2 bg-[var(--accent)]"></div>
+        </div>
+
+        <div class="space-y-48 relative">
+            
+            <!-- Timeline Line -->
+            <div class="hidden md:block absolute left-[2.25rem] top-0 bottom-0 w-1 bg-[var(--border)]/30"></div>
+
+                                    <div class="relative pl-8 md:pl-24" x-data="{ spreading: false }">
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 md:left-[1.95rem] top-12 w-4 h-4 bg-[var(--bg)] border-4 border-[var(--border)] rounded-full z-10 transition-all duration-700"
+                     :class="spreading ? 'border-[var(--accent)] scale-150' : ''"></div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start gap-12 lg:gap-24 relative">
+                    
+                    <!-- Left: Content Paper -->
+                    <div class="w-full md:w-[45rem] relative pt-8 transition-all duration-700"
+                         :class="spreading ? 'opacity-10 blur-md -translate-x-20 scale-95 pointer-events-none' : 'opacity-100'">
+                        <div class="tape-piece"></div>
+                        <div class="neo-paper p-10 sm:p-12 paper-texture relative z-20" style="transform: rotate(-1deg)">
+                            <div class="mb-8 pb-6 border-b-2 border-[var(--border)]/30">
+                                <h3 class="font-black text-4xl text-[var(--text-main)] mb-1 tracking-tight uppercase leading-none">Badan Mentoring</h3>
+                                <p class="text-[var(--text-dim)] font-bold text-lg italic uppercase tracking-wider">Secretary of Logistics Division</p>
+                            </div>
+                            
+                            <p class="text-[10px] text-[var(--text-dim)] font-black uppercase tracking-[0.4em] opacity-40 mb-6">Jan 2026 — Feb 2026 • Sekolah Mentoring</p>
+
+                            <ul class="space-y-4 text-lg leading-relaxed list-none">
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Sourced and identified reliable vendors to provide high-quality materials and equipment required for the Sekolah Mentoring program.
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right: Photo Fan (Ultra-Wide Spread) -->
+                    <div class="hidden md:block shrink-0 w-[32rem] h-[24rem] z-30 mt-16 group cursor-pointer" 
+                         @mouseenter="spreading = true" @mouseleave="spreading = false">
+                        <div class="relative w-full h-full">
+                            <!-- Overlay Label -->
+                            <div class="absolute -top-16 left-0 right-0 text-center transition-all duration-500"
+                                 :class="spreading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+                                <span class="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--accent)]">Ultra-Perspective Active</span>
+                            </div>
+
+                            <!-- Front Image -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-30"
+                                 :class="spreading ? 'scale-110 !shadow-2xl rotate-0 -translate-y-8' : 'rotate-3'">
+                                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Left Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-20"
+                                 :class="spreading ? '-translate-x-[110%] -rotate-6 scale-95 opacity-100' : '-rotate-6 translate-x-2 translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaad5b?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Right Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-10"
+                                 :class="spreading ? 'translate-x-[110%] rotate-6 scale-95 opacity-100' : 'rotate-12 -translate-x-2 -translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Images Section -->
+                    <div class="md:hidden grid grid-cols-1 gap-6 mt-4 w-full">
+                                                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaad5b?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                            </div>
+                </div>
+            </div>
+                                    <div class="relative pl-8 md:pl-24" x-data="{ spreading: false }">
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 md:left-[1.95rem] top-12 w-4 h-4 bg-[var(--bg)] border-4 border-[var(--border)] rounded-full z-10 transition-all duration-700"
+                     :class="spreading ? 'border-[var(--accent)] scale-150' : ''"></div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start gap-12 lg:gap-24 relative">
+                    
+                    <!-- Left: Content Paper -->
+                    <div class="w-full md:w-[45rem] relative pt-8 transition-all duration-700"
+                         :class="spreading ? 'opacity-10 blur-md -translate-x-20 scale-95 pointer-events-none' : 'opacity-100'">
+                        <div class="tape-piece"></div>
+                        <div class="neo-paper p-10 sm:p-12 paper-texture relative z-20" style="transform: rotate(1deg)">
+                            <div class="mb-8 pb-6 border-b-2 border-[var(--border)]/30">
+                                <h3 class="font-black text-4xl text-[var(--text-main)] mb-1 tracking-tight uppercase leading-none">Badan Mentoring</h3>
+                                <p class="text-[var(--text-dim)] font-bold text-lg italic uppercase tracking-wider">Head of Mobilization Division</p>
+                            </div>
+                            
+                            <p class="text-[10px] text-[var(--text-dim)] font-black uppercase tracking-[0.4em] opacity-40 mb-6">Dec 2025 • Closing ICB</p>
+
+                            <ul class="space-y-4 text-lg leading-relaxed list-none">
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Led and managed a division of 40 committee members, overseeing the strategic mobilization of over 1,000 participants to ensure a smooth and orderly Closing ICB event.
+                                </li>
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Strategically plotted and assigned personnel to key operational zones, optimizing crowd control and ensuring all staff were effectively positioned to manage participant flow.
+                                </li>
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Orchestrated the seamless movement of participants, proactively identifying and resolving operational bottlenecks to maintain the event’s schedule and safety protocols.
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right: Photo Fan (Ultra-Wide Spread) -->
+                    <div class="hidden md:block shrink-0 w-[32rem] h-[24rem] z-30 mt-16 group cursor-pointer" 
+                         @mouseenter="spreading = true" @mouseleave="spreading = false">
+                        <div class="relative w-full h-full">
+                            <!-- Overlay Label -->
+                            <div class="absolute -top-16 left-0 right-0 text-center transition-all duration-500"
+                                 :class="spreading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+                                <span class="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--accent)]">Ultra-Perspective Active</span>
+                            </div>
+
+                            <!-- Front Image -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-30"
+                                 :class="spreading ? 'scale-110 !shadow-2xl rotate-0 -translate-y-8' : 'rotate-3'">
+                                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Left Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-20"
+                                 :class="spreading ? '-translate-x-[110%] -rotate-6 scale-95 opacity-100' : '-rotate-6 translate-x-2 translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1540317580114-ed684c0c5ad1?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Right Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-10"
+                                 :class="spreading ? 'translate-x-[110%] rotate-6 scale-95 opacity-100' : 'rotate-12 -translate-x-2 -translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Images Section -->
+                    <div class="md:hidden grid grid-cols-1 gap-6 mt-4 w-full">
+                                                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1540317580114-ed684c0c5ad1?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                            </div>
+                </div>
+            </div>
+                                    <div class="relative pl-8 md:pl-24" x-data="{ spreading: false }">
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 md:left-[1.95rem] top-12 w-4 h-4 bg-[var(--bg)] border-4 border-[var(--border)] rounded-full z-10 transition-all duration-700"
+                     :class="spreading ? 'border-[var(--accent)] scale-150' : ''"></div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start gap-12 lg:gap-24 relative">
+                    
+                    <!-- Left: Content Paper -->
+                    <div class="w-full md:w-[45rem] relative pt-8 transition-all duration-700"
+                         :class="spreading ? 'opacity-10 blur-md -translate-x-20 scale-95 pointer-events-none' : 'opacity-100'">
+                        <div class="tape-piece"></div>
+                        <div class="neo-paper p-10 sm:p-12 paper-texture relative z-20" style="transform: rotate(-0.5deg)">
+                            <div class="mb-8 pb-6 border-b-2 border-[var(--border)]/30">
+                                <h3 class="font-black text-4xl text-[var(--text-main)] mb-1 tracking-tight uppercase leading-none">Badan Mentoring</h3>
+                                <p class="text-[var(--text-dim)] font-bold text-lg italic uppercase tracking-wider">Logistics Associate</p>
+                            </div>
+                            
+                            <p class="text-[10px] text-[var(--text-dim)] font-black uppercase tracking-[0.4em] opacity-40 mb-6">Nov 2025 • Mentoring General ICB</p>
+
+                            <ul class="space-y-4 text-lg leading-relaxed list-none">
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Executed procurement requests from various divisions, ensuring all necessary supplies and equipment were sourced and available on schedule to support event operations.
+                                </li>
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Maintained accountability for borrowed assets, tracking their usage throughout the event and ensuring all items were returned in proper condition.
+                                </li>
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Provided on-site operational support by assisting in the physical setup of event infrastructure, ensuring all logistical needs were met according to the team&#039;s requirements.
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right: Photo Fan (Ultra-Wide Spread) -->
+                    <div class="hidden md:block shrink-0 w-[32rem] h-[24rem] z-30 mt-16 group cursor-pointer" 
+                         @mouseenter="spreading = true" @mouseleave="spreading = false">
+                        <div class="relative w-full h-full">
+                            <!-- Overlay Label -->
+                            <div class="absolute -top-16 left-0 right-0 text-center transition-all duration-500"
+                                 :class="spreading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+                                <span class="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--accent)]">Ultra-Perspective Active</span>
+                            </div>
+
+                            <!-- Front Image -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-30"
+                                 :class="spreading ? 'scale-110 !shadow-2xl rotate-0 -translate-y-8' : 'rotate-3'">
+                                <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Left Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-20"
+                                 :class="spreading ? '-translate-x-[110%] -rotate-6 scale-95 opacity-100' : '-rotate-6 translate-x-2 translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1449247709967-0403120159f8?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Right Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-10"
+                                 :class="spreading ? 'translate-x-[110%] rotate-6 scale-95 opacity-100' : 'rotate-12 -translate-x-2 -translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Images Section -->
+                    <div class="md:hidden grid grid-cols-1 gap-6 mt-4 w-full">
+                                                <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1449247709967-0403120159f8?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                            </div>
+                </div>
+            </div>
+                                    <div class="relative pl-8 md:pl-24" x-data="{ spreading: false }">
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 md:left-[1.95rem] top-12 w-4 h-4 bg-[var(--bg)] border-4 border-[var(--border)] rounded-full z-10 transition-all duration-700"
+                     :class="spreading ? 'border-[var(--accent)] scale-150' : ''"></div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start gap-12 lg:gap-24 relative">
+                    
+                    <!-- Left: Content Paper -->
+                    <div class="w-full md:w-[45rem] relative pt-8 transition-all duration-700"
+                         :class="spreading ? 'opacity-10 blur-md -translate-x-20 scale-95 pointer-events-none' : 'opacity-100'">
+                        <div class="tape-piece"></div>
+                        <div class="neo-paper p-10 sm:p-12 paper-texture relative z-20" style="transform: rotate(0.5deg)">
+                            <div class="mb-8 pb-6 border-b-2 border-[var(--border)]/30">
+                                <h3 class="font-black text-4xl text-[var(--text-main)] mb-1 tracking-tight uppercase leading-none">Badan Mentoring</h3>
+                                <p class="text-[var(--text-dim)] font-bold text-lg italic uppercase tracking-wider">Field Coordinator</p>
+                            </div>
+                            
+                            <p class="text-[10px] text-[var(--text-dim)] font-black uppercase tracking-[0.4em] opacity-40 mb-6">Oct 2025 • Opening ICB</p>
+
+                            <ul class="space-y-4 text-lg leading-relaxed list-none">
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Directed on-site operations and led a team of 100 committee members to execute the Opening ICB event for over 1,000 participants, ensuring every segment of the program ran precisely according to the scheduled timeline.
+                                </li>
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Served as the primary point of contact for real-time troubleshooting, swiftly resolving operational challenges to ensure the event&#039;s continuity and success.
+                                </li>
+                                                                <li class="relative pl-8 text-[var(--text-dim)] before:absolute before:left-0 before:top-3 before:w-3 before:h-3 before:bg-[var(--accent)]/30 before:border-2 before:border-[var(--accent)]">
+                                    Facilitated seamless communication between multiple divisions to synchronize activities, maintaining high-quality execution for a large-scale audience.
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right: Photo Fan (Ultra-Wide Spread) -->
+                    <div class="hidden md:block shrink-0 w-[32rem] h-[24rem] z-30 mt-16 group cursor-pointer" 
+                         @mouseenter="spreading = true" @mouseleave="spreading = false">
+                        <div class="relative w-full h-full">
+                            <!-- Overlay Label -->
+                            <div class="absolute -top-16 left-0 right-0 text-center transition-all duration-500"
+                                 :class="spreading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+                                <span class="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--accent)]">Ultra-Perspective Active</span>
+                            </div>
+
+                            <!-- Front Image -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-30"
+                                 :class="spreading ? 'scale-110 !shadow-2xl rotate-0 -translate-y-8' : 'rotate-3'">
+                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Left Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-20"
+                                 :class="spreading ? '-translate-x-[110%] -rotate-6 scale-95 opacity-100' : '-rotate-6 translate-x-2 translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+
+                            <!-- Right Image (Slides out completely) -->
+                            <div class="absolute inset-x-10 inset-y-0 bg-[var(--bg-alt)] p-3 neo-shadow neo-border transition-all duration-700 z-10"
+                                 :class="spreading ? 'translate-x-[110%] rotate-6 scale-95 opacity-100' : 'rotate-12 -translate-x-2 -translate-y-2 opacity-40'">
+                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full h-full object-cover transition-all duration-700"
+                                     :class="spreading ? 'grayscale-0 brightness-100' : 'grayscale brightness-110'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Images Section -->
+                    <div class="md:hidden grid grid-cols-1 gap-6 mt-4 w-full">
+                                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&amp;fit=crop&amp;q=80&amp;w=400" class="w-full aspect-video object-cover neo-border-sm">
+                                            </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+    <section id="certificate" class="py-32 relative bg-transparent" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+        
+        <div class="mb-24">
+            <h2 class="text-5xl sm:text-7xl font-black text-[var(--text-main)] tracking-tighter uppercase mb-2">Certifications &amp; Achievements</h2>
+            <div class="w-32 h-2 bg-[var(--accent)]"></div>
+        </div>
+
+        
+        <!-- Square Grid -->
+        <div class="flex flex-col sm:flex-row gap-12 max-w-5xl mx-auto">
+                        <div class="group flex-1 aspect-square bg-[var(--bg-alt)] flex flex-col items-center justify-center p-8 neo-border neo-shadow cursor-pointer hover:border-[var(--accent)] transition-all font-display"
+                 @click="expandedCert = {&quot;id&quot;:1,&quot;title&quot;:&quot;SOC Certificate&quot;,&quot;desc&quot;:&quot;Achieved top ranking in the live Security Operations environment challenge. Analyzed pcap files and SIEM logs accurately within the tight time limit.&quot;,&quot;has_leaderboard&quot;:true,&quot;img_cert&quot;:&quot;https:\/\/images.unsplash.com\/photo-1589330694653-efa6483321d7?auto=format&amp;fit=crop&amp;q=80&amp;w=800&quot;,&quot;img_leaderboard&quot;:&quot;https:\/\/images.unsplash.com\/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;q=80&amp;w=800&quot;}">
+                
+                <h3 class="text-3xl font-black text-[var(--text-main)] text-center leading-none tracking-tighter group-hover:text-[var(--accent)] transition-colors">SOC Certificate</h3>
+                
+                <p class="mt-8 text-xs font-black text-[var(--text-dim)] group-hover:text-[var(--text-main)] transition-colors tracking-[0.3em] uppercase flex items-center gap-3">
+                    View Certificate 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </p>
+                
+            </div>
+                        <div class="group flex-1 aspect-square bg-[var(--bg-alt)] flex flex-col items-center justify-center p-8 neo-border neo-shadow cursor-pointer hover:border-[var(--accent)] transition-all font-display"
+                 @click="expandedCert = {&quot;id&quot;:2,&quot;title&quot;:&quot;Pentest Certificate (Ethical Hacking)&quot;,&quot;desc&quot;:&quot;Successfully exploited advanced machines covering SQLi, XSS, and Privilege Escalation to secure a top spot on the scoreboard.&quot;,&quot;has_leaderboard&quot;:true,&quot;img_cert&quot;:&quot;https:\/\/images.unsplash.com\/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=800&quot;,&quot;img_leaderboard&quot;:&quot;https:\/\/images.unsplash.com\/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;q=80&amp;w=800&quot;}">
+                
+                <h3 class="text-3xl font-black text-[var(--text-main)] text-center leading-none tracking-tighter group-hover:text-[var(--accent)] transition-colors">Pentest Certificate (Ethical Hacking)</h3>
+                
+                <p class="mt-8 text-xs font-black text-[var(--text-dim)] group-hover:text-[var(--text-main)] transition-colors tracking-[0.3em] uppercase flex items-center gap-3">
+                    View Certificate 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </p>
+                
+            </div>
+                    </div>
+
+        <!-- Alpine.js Modal Lightbox -->
+        <template x-teleport="body">
+            <div x-show="expandedCert" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <!-- Backdrop -->
+                <div x-show="expandedCert" 
+                     x-transition.opacity 
+                     class="fixed inset-0 bg-white/95 backdrop-blur-sm" 
+                     @click="expandedCert = null"></div>
+
+                <div class="flex min-h-full items-center justify-center p-4 sm:p-8 relative">
+                    
+                    <!-- Close button -->
+                    <button @click="expandedCert = null" class="fixed top-8 right-8 z-[110] p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-black transition-colors">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+
+                    <!-- Modal Panel -->
+                    <div x-show="expandedCert" 
+                         x-transition:enter="ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                         class="relative w-full max-w-7xl z-10 flex flex-col lg:flex-row gap-0 bg-[var(--bg)] neo-shadow neo-border overflow-hidden">
+                        
+                        <!-- LEFT PANEL (60%): Main Certificate -->
+                        <div class="w-full lg:w-3/5 bg-white p-6 sm:p-12 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-[var(--border)]">
+                            <div class="w-full h-full flex items-center justify-center min-h-[400px]">
+                                <img :src="expandedCert?.img_cert" :alt="expandedCert?.title" class="w-full object-contain max-h-[80vh] shadow-2xl">
+                            </div>
+                        </div>
+
+                        <!-- RIGHT PANEL (40%): Leaderboard + Description -->
+                        <div class="w-full lg:w-2/5 flex flex-col bg-[var(--bg-alt)]">
+                            
+                            <!-- Top: Leaderboard Image (Smaller) -->
+                            <div x-show="expandedCert?.has_leaderboard" class="w-full p-8 border-b border-[var(--border)] bg-white/50">
+                                <p class="text-[0.65rem] font-black uppercase tracking-[0.4em] text-[var(--accent)] mb-4 italic">Achievement Verification</p>
+                                <div class="w-full aspect-video bg-zinc-100 flex items-center justify-center overflow-hidden neo-border">
+                                    <img :src="expandedCert?.img_leaderboard" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Leaderboard details">
+                                </div>
+                            </div>
+
+                            <!-- Bottom: Text Details -->
+                            <div class="flex-1 p-8 sm:p-12 flex flex-col justify-center">
+                                <div class="w-12 h-1 bg-[var(--accent)] mb-8"></div>
+                                <h3 class="text-4xl sm:text-5xl font-black text-[var(--text-main)] mb-6 tracking-tighter uppercase leading-none" x-text="expandedCert?.title"></h3>
+                                <p class="text-[var(--text-dim)] text-xl leading-relaxed italic" x-text="expandedCert?.desc"></p>
+                                
+                                <div class="mt-12 pt-8 border-t border-[var(--border)]/50">
+                                    <button @click="expandedCert = null" class="text-sm font-black uppercase tracking-widest text-[var(--text-main)] hover:text-[var(--accent)] transition-colors flex items-center gap-3">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                                        Back to Gallery
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</section>
+    <section id="education" class="py-32 relative bg-transparent" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+        
+        <div class="mb-24">
+            <h2 class="text-5xl sm:text-7xl font-black text-[var(--text-main)] tracking-tighter uppercase mb-2">Education</h2>
+            <div class="w-32 h-2 bg-[var(--accent)]"></div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-y border-[var(--border)] py-12 gap-8 group hover:bg-[var(--bg-alt)] transition-all px-8 -mx-8 cursor-default neo-shadow outline-none border-t-0">
+            
+            <div class="flex items-center gap-8">
+                <!-- University Logo Placeholder -->
+                <div class="w-20 h-20 shrink-0 bg-[var(--bg-alt)] border-2 border-[var(--border)] flex items-center justify-center rounded-none group-hover:scale-110 group-hover:bg-[var(--accent)] transition-all duration-500">
+                    <svg class="w-10 h-10 text-[var(--text-main)] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v7" />
+                    </svg>
+                </div>
+
+                <div>
+                    <h3 class="text-3xl font-black text-[var(--text-main)] tracking-tight">Telkom University</h3>
+                    <p class="text-[var(--text-dim)] font-bold text-xl mt-2 italic">GPA: <span class="text-[var(--text-main)] not-italic">3.85 / 4.00</span></p>
+                </div>
+            </div>
+
+            <div class="sm:text-right">
+                <span class="text-[var(--text-main)] font-black text-2xl tracking-widest uppercase">2022 - 2026 (Expected)</span>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+    <section id="contact" class="py-40 relative bg-transparent" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-1000" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+        
+        <div class="w-20 h-2 bg-[var(--accent)] mx-auto mb-10"></div>
+        <h2 class="text-6xl sm:text-8xl font-black text-[var(--text-main)] tracking-tighter mb-8 leading-none">Let's Talk.</h2>
+        <p class="text-xl text-[var(--text-dim)] mb-16 max-w-xl mx-auto font-medium leading-relaxed">
+            Currently looking for new opportunities in <span class="text-[var(--text-main)] font-bold underline decoration-[var(--accent)] decoration-2">Cybersecurity</span>. Whether you have a question or just want to say hi, I'll get back to you!
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-10">
+            <a href="mailto:rahadya.daffa@gmail.com" class="group relative px-12 py-6 bg-[var(--accent)] text-white text-xl font-black neo-shadow neo-border-accent hover:brightness-110 transition-all uppercase tracking-widest">
+                Say Hello
+                <span class="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-3 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
+            
+            <a href="https://www.linkedin.com/in/daffa-rahadya-atmawiguna-25ab023b4/" target="_blank" rel="noopener" class="flex items-center gap-3 text-xl font-black text-[var(--text-dim)] hover:text-[var(--accent)] transition-all group">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/>
+                </svg>
+                LinkedIn
+            </a>
+        </div>
+
+    </div>
+</section>
+    </main>
+
+    <footer class="bg-white text-gray-500 py-12 text-center border-t border-gray-200 mt-20" x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'" class="transition-all duration-1000 delay-200">
+        <p class="text-sm">&copy; 2026 Daffa Rahadya. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
