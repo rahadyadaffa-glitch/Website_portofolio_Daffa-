@@ -13,7 +13,7 @@
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-10">
-            <a href="mailto:rahadya.daffa@gmail.com"
+            <a href="mailto:rahadyadaffa@gmail.com"
                 class="group relative px-12 py-6 bg-[var(--accent)] text-white text-xl font-black neo-shadow neo-border-accent hover:brightness-110 transition-all uppercase tracking-widest">
                 Say Hello
                 <span
