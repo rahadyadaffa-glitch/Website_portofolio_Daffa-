@@ -15,7 +15,7 @@
             <div class="flex items-center gap-8">
                 <!-- University Logo -->
                 <div
-                    class="w-20 h-20 shrink-0 bg-white border-2 border-[var(--border)] flex items-center justify-center rounded-none group-hover:scale-110 group-hover:border-[var(--accent)] transition-all duration-500 overflow-hidden">
+                    class="w-20 h-20 shrink-0 bg-transparent flex items-center justify-center rounded-none group-hover:scale-110 transition-all duration-500 overflow-hidden">
                     <img src="/images/university/university-logo.webp" alt="University Logo"
                         class="w-full h-full object-contain">
                 </div>
