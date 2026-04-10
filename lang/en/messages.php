@@ -20,7 +20,7 @@ return [
         'skills_os' => 'Operating Systems',
     ],
     'section_titles' => [
-        'portfolio' => 'My Work',
+        'portfolio' => 'My Portofolio',
         'organization' => 'Organization',
         'certificate' => 'Certifications & Achievements',
         'university' => 'Education',
